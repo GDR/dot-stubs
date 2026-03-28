@@ -22,6 +22,15 @@
               client = mkOption { type = types.bool; default = false; };
               datacenter = mkOption { type = types.str; default = ""; };
               gossipKeyFile = mkOption { type = types.nullOr types.path; default = null; };
+              vaultAddr = mkOption { type = types.nullOr types.str; default = null; };
+            };
+            vault = {
+              enable = mkEnableOption "Vault (stub)";
+              bindInterface = mkOption { type = types.str; default = "tailscale0"; };
+              clusterAddr = mkOption { type = types.str; default = ""; };
+              storageDir = mkOption { type = types.str; default = "/var/lib/vault/raft"; };
+              unsealKeysFile = mkOption { type = types.nullOr types.str; default = null; };
+              enableUi = mkOption { type = types.bool; default = true; };
             };
           };
         };
@@ -41,6 +50,7 @@
               datacenter = mkOption { type = types.str; default = ""; };
               serverJoin = mkOption { type = types.listOf types.str; default = [ ]; };
               gossipKeyFile = mkOption { type = types.nullOr types.path; default = null; };
+              vaultAddr = mkOption { type = types.nullOr types.str; default = null; };
             };
           };
         };
@@ -56,6 +66,19 @@
 
       # Remote builder
       remote-builder = { ... }: { };
+
+      # Vault
+      vault = { lib, ... }:
+        let inherit (lib) mkOption types mkEnableOption; in {
+          options.services.vantage.vault = {
+            enable = mkEnableOption "Vault (stub)";
+            bindInterface = mkOption { type = types.str; default = "tailscale0"; };
+            clusterAddr = mkOption { type = types.str; default = ""; };
+            storageDir = mkOption { type = types.str; default = "/var/lib/vault/raft"; };
+            unsealKeysFile = mkOption { type = types.nullOr types.str; default = null; };
+            enableUi = mkOption { type = types.bool; default = true; };
+          };
+        };
     };
 
     darwinModules = {
