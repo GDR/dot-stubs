@@ -29,8 +29,15 @@
               bindInterface = mkOption { type = types.str; default = "tailscale0"; };
               clusterAddr = mkOption { type = types.str; default = ""; };
               storageDir = mkOption { type = types.str; default = "/var/lib/vault/raft"; };
-              unsealKeysFile = mkOption { type = types.nullOr types.str; default = null; };
               enableUi = mkOption { type = types.bool; default = true; };
+              gcpKms = {
+                enable = mkOption { type = types.bool; default = false; };
+                project = mkOption { type = types.str; default = ""; };
+                region = mkOption { type = types.str; default = "global"; };
+                keyRing = mkOption { type = types.str; default = "vault"; };
+                cryptoKey = mkOption { type = types.str; default = "unseal"; };
+                credentialsFile = mkOption { type = types.nullOr types.str; default = null; };
+              };
             };
           };
         };
@@ -67,7 +74,7 @@
       # Remote builder
       remote-builder = { ... }: { };
 
-      # Vault
+      # Vault (standalone — also included in infra-server profile)
       vault = { lib, ... }:
         let inherit (lib) mkOption types mkEnableOption; in {
           options.services.vantage.vault = {
@@ -75,8 +82,15 @@
             bindInterface = mkOption { type = types.str; default = "tailscale0"; };
             clusterAddr = mkOption { type = types.str; default = ""; };
             storageDir = mkOption { type = types.str; default = "/var/lib/vault/raft"; };
-            unsealKeysFile = mkOption { type = types.nullOr types.str; default = null; };
             enableUi = mkOption { type = types.bool; default = true; };
+            gcpKms = {
+              enable = mkOption { type = types.bool; default = false; };
+              project = mkOption { type = types.str; default = ""; };
+              region = mkOption { type = types.str; default = "global"; };
+              keyRing = mkOption { type = types.str; default = "vault"; };
+              cryptoKey = mkOption { type = types.str; default = "unseal"; };
+              credentialsFile = mkOption { type = types.nullOr types.str; default = null; };
+            };
           };
         };
     };
