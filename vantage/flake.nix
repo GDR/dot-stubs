@@ -80,6 +80,7 @@
           options.services.vantage.vault = {
             enable = mkEnableOption "Vault (stub)";
             bindInterface = mkOption { type = types.str; default = "tailscale0"; };
+            serviceAddr = mkOption { type = types.str; default = ""; };
             clusterAddr = mkOption { type = types.str; default = ""; };
             storageDir = mkOption { type = types.str; default = "/var/lib/vault/raft"; };
             enableUi = mkOption { type = types.bool; default = true; };
